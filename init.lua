@@ -21,7 +21,7 @@ opt.mouse = "a" -- Enable mouse mode
 opt.number = true -- Print line number
 opt.pumblend = 10 -- Popup blend
 opt.pumheight = 10 -- Maximum number of entries in a popup
-opt.relativenumber = true -- Relative line numbers
+opt.relativenumber = false -- Relative line numbers
 opt.scrolloff = 4 -- Lines of context
 opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
 opt.shiftround = true -- Round indent
@@ -106,11 +106,8 @@ require("lazy").setup({
 --       { "<leader>nc", "<Cmd>NvimTreeToggle<CR>", "Show Clipboard" }
 --   }
 },
-  "folke/tokyonight.nvim",
   "tanvirtin/monokai.nvim"
 })
-
-vim.cmd 'colorscheme monokai_pro'
 
 -- disable netrw at the very start of your init.lua
 vim.g.loaded_netrw = 1
@@ -165,4 +162,13 @@ require("mini.comment").setup()
 require("mini.surround").setup()
 require("mini.statusline").setup()
 require("mini.completion").setup()
+
+require('monokai').setup { 
+  palette = require('monokai').ristretto,
+  custom_hlgroups = {
+    Normal = {
+      bg = None
+    }
+  }
+}
 
