@@ -1,4 +1,4 @@
-vim.g.mapleader = ' '
+vim.g.mapleader = ''
 vim.g.localleader = '\\'
 
 local opt = vim.opt
@@ -56,6 +56,8 @@ opt.fillchars = {
   eob = " ",
 }
 
+vim.wo.colorcolumn = '80'
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -101,12 +103,12 @@ require("lazy").setup({
   config = function()
     require("nvim-tree").setup {}
   end,
---   keys = {
---       { "<leader>nt", "<Cmd>NvimTreeToggle<CR>", "Toggle Tree" },
---       { "<leader>nc", "<Cmd>NvimTreeToggle<CR>", "Show Clipboard" }
---   }
+  keys = {
+      { "<leader>nt", "<Cmd>NvimTreeToggle<CR>", "Toggle Tree" },
+      { "<leader>nc", "<Cmd>NvimTreeToggle<CR>", "Show Clipboard" }
+  }
 },
-  "tanvirtin/monokai.nvim"
+  "tanvirtin/monokai.nvim",
 })
 
 -- disable netrw at the very start of your init.lua
@@ -118,6 +120,11 @@ vim.opt.termguicolors = true
 
 require("mason").setup()
 require("mason-lspconfig").setup()
+require("mason-lspconfig").setup_handlers {
+	function(server_name) -- default handler
+		require("lspconfig")[server_name].setup {}
+	end
+}
 
 -- OR setup with some options
 require("nvim-tree").setup({
@@ -153,7 +160,8 @@ wk.register({
       g = { "<Cmd>Telescope live_grep<CR>", "Live Grep" },
       b = { "<Cmd>Telescope buffers<CR>", "Buffers" },
       h = { "<Cmd>Telescope help_tags<CR>", "Tags" }
-    }
+    },
+    m = { "<Cmd>Mason<CR>", "Mason" }
   }
   });
 
@@ -171,4 +179,3 @@ require('monokai').setup {
     }
   }
 }
-
