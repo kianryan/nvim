@@ -72,12 +72,17 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+{"EdenEast/nightfox.nvim"},
 {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
 {"williamboman/mason.nvim"},
 {"williamboman/mason-lspconfig.nvim"},
 {"neovim/nvim-lspconfig"},
 { 'echasnovski/mini.nvim', version = false },
 {"lewis6991/gitsigns.nvim"},
+{
+    "jim-at-jibba/micropython.nvim",
+    dependencies = { "akinsho/toggleterm.nvim", "stevearc/dressing.nvim" },
+},
 {
   "folke/which-key.nvim",
   event = "VeryLazy",
@@ -108,7 +113,6 @@ require("lazy").setup({
       { "<leader>nc", "<Cmd>NvimTreeToggle<CR>", "Show Clipboard" }
   }
 },
-  "tanvirtin/monokai.nvim",
 })
 
 -- disable netrw at the very start of your init.lua
@@ -143,26 +147,20 @@ require("nvim-tree").setup({
 })
 
 local wk = require('which-key')
-wk.register({
-  ["<leader>"] = {
-    v = {
-      "C-V",
-      "Stupid C-V Win Terminal Fix"
-    },
-    n = {
-      name = "+Tree",
-      t = { "<Cmd>NvimTreeToggle<CR>", "Toggle Tree" },
-      c = { "<Cmd>NvimTreeClipboard<CR>", "Show Clipboard" }
-    },
-    f = {
-      name = "+Telescope",
-      f = { "<Cmd>Telescope find_files<CR>", "Find File" },
-      g = { "<Cmd>Telescope live_grep<CR>", "Live Grep" },
-      b = { "<Cmd>Telescope buffers<CR>", "Buffers" },
-      h = { "<Cmd>Telescope help_tags<CR>", "Tags" }
-    },
-    m = { "<Cmd>Mason<CR>", "Mason" }
-  }
+wk.add({
+  { "<leader>f", group = "Telescope" },
+  { "<leader>fb", "<Cmd>Telescope buffers<CR>", desc = "Buffers" },
+  { "<leader>ff", "<Cmd>Telescope find_files<CR>", desc = "Find File" },
+  { "<leader>fg", "<Cmd>Telescope live_grep<CR>", desc = "Live Grep" },
+  { "<leader>fh", "<Cmd>Telescope help_tags<CR>", desc = "Tags" },
+  { "<leader>m", "<Cmd>Mason<CR>", desc = "Mason" },
+  { "<leader>n", group = "Tree" },
+  { "<leader>nc", "<Cmd>NvimTreeClipboard<CR>", desc = "Show Clipboard" },
+  { "<leader>nt", "<Cmd>NvimTreeToggle<CR>", desc = "Toggle Tree" },
+  { "<leader>v", "C-V", desc = "Stupid C-V Win Terminal Fix" },
+  { "<leader>a", group = "Micropython" },
+  { "<leader>ar", "<Cmd>MPRun<CR>", desc = "Micropython Run" },
+  { "<leader>ap", "<Cmd>MPRepl<CR>", desc = "Micropython Repl" },
   });
 
 require('gitsigns').setup()
@@ -171,11 +169,10 @@ require("mini.surround").setup()
 require("mini.statusline").setup()
 require("mini.completion").setup()
 
-require('monokai').setup { 
-  palette = require('monokai').ristretto,
-  custom_hlgroups = {
-    Normal = {
-      bg = None
-    }
+require('nightfox').setup({
+  options = {
+    transparent = true
   }
-}
+})
+
+vim.cmd("colorscheme carbonfox")
