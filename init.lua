@@ -237,7 +237,7 @@ wk.add({
   { "<leader>m", "<Cmd>Mason<CR>", desc = "Mason" },
   { "<leader>n", group = "Tree" },
   { "<leader>nc", "<Cmd>NvimTreeClipboard<CR>", desc = "Show Clipboard" },
-  { "<leader>nt", "<Cmd>NvimTre<LeftMouse>Toggle<CR>", desc = "Toggle Tree" },
+  -- { "<leader>nt", "<Cmd>NvimTre<LeftMouse>Toggle<CR>", desc = "Toggle Tree" },
   { "<leader>v", "C-V", desc = "Stupid C-V Win Terminal Fix" },
   { "<leader>a", group = "Micropython" },
   { "<leader>ar", "<Cmd>MPRun<CR>", desc = "Micropython Run" },
