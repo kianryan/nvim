@@ -78,6 +78,11 @@ require("lazy").setup({
 {"williamboman/mason-lspconfig.nvim"},
 {"neovim/nvim-lspconfig"},
 { 'echasnovski/mini.nvim', version = false },
+{
+  'catgoose/nvim-colorizer.lua',
+  event = 'BufReadPre'
+
+},
 {"lewis6991/gitsigns.nvim"},
 {
     "jim-at-jibba/micropython.nvim",
@@ -168,6 +173,7 @@ require("mini.comment").setup()
 require("mini.surround").setup()
 require("mini.statusline").setup()
 require("mini.completion").setup()
+require("colorizer").setup()
 
 require('nightfox').setup({
   options = {
