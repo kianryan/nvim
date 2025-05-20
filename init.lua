@@ -156,7 +156,6 @@ require("lazy").setup({
 {"williamboman/mason-lspconfig.nvim"},
 
 {"neovim/nvim-lspconfig"},
-{"nvimtools/none-ls.nvim"},
 { 'echasnovski/mini.nvim', version = false },
 {
   'catgoose/nvim-colorizer.lua',
