@@ -1,7 +1,7 @@
 vim.g.mapleader = ''
 vim.g.localleader = '\\'
 
-vim.diagnostic.config({ virtual_text = true })
+-- vim.diagnostic.config({ virtual_text = true })
 
 local opt = vim.opt
 
@@ -59,6 +59,8 @@ opt.fillchars = {
 
 opt.spell = true
 opt.spelllang = "en"
+opt.spelloptions = "camel,noplainbuffer"
+opt.spellsuggest = "best,6"
 
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
@@ -160,9 +162,60 @@ require("lazy").setup({
 {
   'catgoose/nvim-colorizer.lua',
   event = 'BufReadPre'
-
 },
 {"lewis6991/gitsigns.nvim"},
+{
+  "folke/trouble.nvim",
+  opts = {}, -- for default options, refer to the configuration section for custom setup.
+  cmd = "Trouble",
+  keys = {
+    {
+      "<leader>xx",
+      "<cmd>Trouble diagnostics toggle<cr>",
+      desc = "Diagnostics (Trouble)",
+    },
+    {
+      "<leader>xX",
+      "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+      desc = "Buffer Diagnostics (Trouble)",
+    },
+    {
+      "<leader>cs",
+      "<cmd>Trouble symbols toggle focus=false<cr>",
+      desc = "Symbols (Trouble)",
+    },
+    {
+      "<leader>cl",
+      "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+      desc = "LSP Definitions / references / ... (Trouble)",
+    },
+    {
+      "<leader>xL",
+      "<cmd>Trouble loclist toggle<cr>",
+      desc = "Location List (Trouble)",
+    },
+    {
+      "<leader>xQ",
+      "<cmd>Trouble qflist toggle<cr>",
+      desc = "Quickfix List (Trouble)",
+    },
+  },
+  modes = {
+    preview_float = {
+      mode = "diagnostics",
+      preview = {
+        type = "float",
+        relative = "editor",
+        border = "rounded",
+        title = "Preview",
+        title_pos = "center",
+        position = { 0, -2 },
+        size = { width = 0.3, height = 0.3 },
+        zindex = 200,
+      },
+    },
+  },
+},
 {"Hoffs/omnisharp-extended-lsp.nvim"},
 {
     "jim-at-jibba/micropython.nvim",
@@ -248,6 +301,7 @@ require("mini.comment").setup()
 require("mini.surround").setup()
 require("mini.statusline").setup()
 require("mini.completion").setup()
+require('mini.pairs').setup()
 require("colorizer").setup()
 
 require('nightfox').setup({
