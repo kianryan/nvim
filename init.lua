@@ -101,24 +101,26 @@ local on_attach = function(client, bufnr)
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, '[W]orkspace [L]ist Folders')
 
--- setup compiler config for omnisharp
-if client and client.name == "omnisharp" then
-    -- nmap('gd', require('omnisharp_extended').lsp_definition, '[G]oto [D]efinition')
-    -- nmap('gr', require('omnisharp_extended').lsp_references, '[G]oto [R]eferences')
-    -- nmap('gI', require('omnisharp_extended').lsp_implementation, '[G]oto [I]mplementation')
-    -- nmap('<leader>D', require('omnisharp_extended').lsp_type_definition, 'Type [D]efinition')
+  -- setup compiler config for omnisharp
+  if client and client.name == "omnisharp" then
+      -- nmap('gd', require('omnisharp_extended').lsp_definition, '[G]oto [D]efinition')
+      -- nmap('gr', require('omnisharp_extended').lsp_references, '[G]oto [R]eferences')
+      -- nmap('gI', require('omnisharp_extended').lsp_implementation, '[G]oto [I]mplementation')
+      -- nmap('<leader>D', require('omnisharp_extended').lsp_type_definition, 'Type [D]efinition')
 
-    nmap('gd', require('omnisharp_extended').telescope_lsp_definition({ jump_type = "vsplit" }), '[G]oto [D]efinition')
-    nmap('gR', require('omnisharp_extended').telescope_lsp_references(), '[G]oto [R]eferences')
-    nmap('gI', require('omnisharp_extended').telescope_lsp_implementation(), '[G]oto [I]mplementation')
-    nmap('<leader>D', require('omnisharp_extended').lsp_type_definition(), 'Type [D]efinition')
+      nmap('gd', require('omnisharp_extended').telescope_lsp_definition({ jump_type = "vsplit" }), '[G]oto [D]efinition')
+      nmap('gR', require('omnisharp_extended').telescope_lsp_references(), '[G]oto [R]eferences')
+      nmap('gI', require('omnisharp_extended').telescope_lsp_implementation(), '[G]oto [I]mplementation')
+      nmap('<leader>D', require('omnisharp_extended').lsp_type_definition(), 'Type [D]efinition')
 
-end
+  end
 
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
     vim.lsp.buf.format()
   end, { desc = 'Format current buffer with LSP' })
+
+
 end
 
 local lsp = vim.lsp
@@ -164,6 +166,26 @@ require("lazy").setup({
   event = 'BufReadPre'
 },
 {"lewis6991/gitsigns.nvim"},
+{
+    "kdheepak/lazygit.nvim",
+    lazy = true,
+    cmd = {
+        "LazyGit",
+        "LazyGitConfig",
+        "LazyGitCurrentFile",
+        "LazyGitFilter",
+        "LazyGitFilterCurrentFile",
+    },
+    -- optional for floating window border decoration
+    dependencies = {
+        "nvim-lua/plenary.nvim",
+    },
+    -- setting the keybinding for LazyGit with 'keys' is recommended in
+    -- order to load the plugin when the command is run for the first time
+    keys = {
+        { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
+    }
+},
 {
   "folke/trouble.nvim",
   opts = {}, -- for default options, refer to the configuration section for custom setup.
@@ -231,11 +253,53 @@ require("lazy").setup({
   opts = {
   }
 },
-  "folke/neodev.nvim",
-  {
-    'nvim-telescope/telescope.nvim', branch = '0.1.x',
-    dependencies = { 'nvim-lua/plenary.nvim' }
+
+{
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
+    },
   },
+  { -- optional cmp completion source for require statements and module annotations
+    "hrsh7th/nvim-cmp",
+    opts = function(_, opts)
+      opts.sources = opts.sources or {}
+      table.insert(opts.sources, {
+        name = "lazydev",
+        group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+      })
+    end,
+  },
+  { -- optional blink completion source for require statements and module annotations
+    "saghen/blink.cmp",
+    version = '1.*', -- keep this pinned for rust fuzzy finder
+    opts = {
+      fuzzy = { implementation = 'lua' },
+      sources = {
+        -- add lazydev to your completion providers
+        default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+        providers = {
+          lazydev = {
+            name = "LazyDev",
+            module = "lazydev.integrations.blink",
+            -- make lazydev completions top priority (see `:h blink.cmp`)
+            score_offset = 100,
+          },
+        },
+      },
+    },
+  },
+  -- { "folke/neodev.nvim", enabled = false }, -- make sure to uninstall or disable neodev.nvim
+
+{
+  'nvim-telescope/telescope.nvim', branch = '0.1.x',
+  dependencies = { 'nvim-lua/plenary.nvim' }
+},
 {
   "nvim-tree/nvim-tree.lua",
   version = "*",
