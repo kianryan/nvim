@@ -274,6 +274,17 @@ require("lazy").setup({
   dependencies = { 'nvim-lua/plenary.nvim' }
 },
 {
+    "rachartier/tiny-code-action.nvim",
+    dependencies = {
+        {"nvim-lua/plenary.nvim"},
+
+        -- optional picker via telescope
+        {"nvim-telescope/telescope.nvim"},
+    },
+    event = "LspAttach",
+    opts = {},
+},
+{
   "nvim-tree/nvim-tree.lua",
   version = "*",
   Glazy = false,
@@ -289,6 +300,10 @@ require("lazy").setup({
   }
 },
 })
+
+vim.keymap.set({ "n", "x" }, "<leader>ca", function()
+	require("tiny-code-action").code_action()
+end, { noremap = true, silent = true })
 
 -- disable netrw at the very start of your init.lua
 vim.g.loaded_netrw = 1
@@ -335,9 +350,7 @@ wk.add({
   { "<leader>v", "C-V", desc = "Stupid C-V Win Terminal Fix" },
   { "<leader>a", group = "Micropython" },
   { "<leader>ar", "<Cmd>MPRun<CR>", desc = "Micropython Run" },
-  { "<leader>ap", "<Cmd>MPRepl<CR>", desc = "Micropython Repl" },
-  { "<leader>c", group = "Code" },
-  { "<leader>ca", "<Cmd>:lua vim.lsp.buf.code_action()<CR>", desc = "Code Actions" },
+  { "<leader>ap", "<Cmd>MPRepl<CR>", desc = "Micropython Repl" }
   });
 
 require('gitsigns').setup()
