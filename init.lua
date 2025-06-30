@@ -92,17 +92,6 @@ vim.lsp.config("roslyn", {
 })
 
 
--- -- document existing key chains
--- require('which-key').register {
---   ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
---   ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
---   ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
---   ['<leader>h'] = { name = 'More git', _ = 'which_key_ignore' },
---   ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
---   ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
---   ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
--- }
-
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -162,7 +151,23 @@ require("lazy").setup({
 
 {
   "folke/trouble.nvim",
-  opts = {}, -- for default options, refer to the configuration section for custom setup.
+  opts = {
+    modes = {
+      preview_float = {
+        mode = "diagnostics",
+        preview = {
+          type = "float",
+          relative = "editor",
+          border = "rounded",
+          title = "Preview",
+          title_pos = "center",
+          position = { 0, -2 },
+          size = { width = 0.3, height = 0.3 },
+          zindex = 200,
+        },
+      },
+    },
+  }, -- for default options, refer to the configuration section for custom setup.
   cmd = "Trouble",
   keys = {
     {
@@ -196,21 +201,6 @@ require("lazy").setup({
       desc = "Quickfix List (Trouble)",
     },
   },
-  modes = {
-    preview_float = {
-      mode = "diagnostics",
-      preview = {
-        type = "float",
-        relative = "editor",
-        border = "rounded",
-        title = "Preview",
-        title_pos = "center",
-        position = { 0, -2 },
-        size = { width = 0.3, height = 0.3 },
-        zindex = 200,
-      },
-    },
-  },
 },
 {
     "jim-at-jibba/micropython.nvim",
@@ -238,36 +228,6 @@ require("lazy").setup({
       },
     },
   },
-  { -- optional cmp completion source for require statements and module annotations
-    "hrsh7th/nvim-cmp",
-    opts = function(_, opts)
-      opts.sources = opts.sources or {}
-      table.insert(opts.sources, {
-        name = "lazydev",
-        group_index = 0, -- set group index to 0 to skip loading LuaLS completions
-      })
-    end,
-  },
-  { -- optional blink completion source for require statements and module annotations
-    "saghen/blink.cmp",
-    version = '1.*', -- keep this pinned for rust fuzzy finder
-    opts = {
-      fuzzy = { implementation = 'lua' },
-      sources = {
-        -- add lazydev to your completion providers
-        default = { "lazydev", "lsp", "path", "snippets", "buffer" },
-        providers = {
-          lazydev = {
-            name = "LazyDev",
-            module = "lazydev.integrations.blink",
-            -- make lazydev completions top priority (see `:h blink.cmp`)
-            score_offset = 100,
-          },
-        },
-      },
-    },
-  },
-  -- { "folke/neodev.nvim", enabled = false }, -- make sure to uninstall or disable neodev.nvim
 
 {
   'nvim-telescope/telescope.nvim', branch = '0.1.x',
@@ -385,6 +345,5 @@ require('nightfox').setup({
     transparent = true
   }
 })
-
 
 vim.cmd("colorscheme carbonfox")
