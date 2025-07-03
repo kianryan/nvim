@@ -251,9 +251,14 @@ require("lazy").setup({
   dependencies = {
     "nvim-tree/nvim-web-devicons",
   },
-  config = function()
-    require("nvim-tree").setup {}
-  end,
+  -- config = function()
+  --   require("nvim-tree").setup {
+  --
+  --       view = {
+  --         width = width
+  --       }
+  --   }
+  -- end,
   keys = {
       { "<leader>nt", "<Cmd>NvimTreeToggle<CR>", "Toggle Tree" },
       { "<leader>nc", "<Cmd>NvimTreeToggle<CR>", "Show Clipboard" }
@@ -280,13 +285,26 @@ registries = {
 })
 require("mason-lspconfig").setup()
 
+-- Set width of Nvim-tree based on width of nvim window
+local function width()
+    local winwidth = vim.go.columns
+    if winwidth <= 100 then
+        return 30
+    elseif winwidth <= 200 then
+        return 40
+    else
+        return 50
+    end
+end
+
+
 -- OR setup with some options
 require("nvim-tree").setup({
   sort = {
     sorter = "case_sensitive",
   },
   view = {
-    width = 30,
+    width = width()
   },
   renderer = {
     group_empty = true,
