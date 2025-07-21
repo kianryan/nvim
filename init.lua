@@ -88,6 +88,12 @@ vim.lsp.config("roslyn", {
         ["csharp|code_lens"] = {
             dotnet_enable_references_code_lens = true,
         },
+        ["csharp|completion"] = {
+          dotnet_show_name_completion_suggestions = true
+        },
+        ["csharp|formatting"] = {
+          dotnet_organize_imports_on_format = true
+        }
     },
 })
 
@@ -142,8 +148,8 @@ require("lazy").setup({
 {
     "seblyng/roslyn.nvim",
     ft = "cs",
-    ---@module 'roslyn.config'
-    ---@type RoslynNvimConfig
+      ---@module 'roslyn.config'
+      ---@type RoslynNvimConfig
     opts = {
         -- your configuration comes here; leave empty for default settings
     },
