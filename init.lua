@@ -148,6 +148,20 @@ require("lazy").setup({
 },
 
 {
+  'vimwiki/vimwiki',
+  init = function()
+    if vim.fn.has('win32') == 1 or vim.fn.has('win64') == 1 then
+      vim.g.vimwiki_path = 'd:/syncthing/vimwiki/'
+    else
+      vim.g.vimwiki_path = '~/syncthing/vimwiki/'
+    end
+    vim.g.vimwiki_syntax = 'markdown'
+    vim.g.vimwiki_ext = 'md'
+    vim.g.vimwiki_diary_frequency = 'weekly'
+  end,
+},
+
+{
   "Kurren123/mssql.nvim",
   opts = {
     -- optional
