@@ -68,6 +68,7 @@ vim.lsp.config("*", {
   on_attach = on_attach
 })
 
+
 vim.lsp.config("roslyn", {
     settings = {
         ["csharp|inlay_hints"] = {
@@ -209,13 +210,17 @@ require("lazy").setup({
   }
 },
 
+{ "rcarriga/nvim-dap-ui", 
+  dependencies = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"}
+},
+
 {
     "seblyng/roslyn.nvim",
     ft = "cs",
       ---@module 'roslyn.config'
       ---@type RoslynNvimConfig
     opts = {
-        -- your configuration comes here; leave empty for default settings
+      filewatching = "roslyn"
     },
 },
 
@@ -391,6 +396,10 @@ require("nvim-tree").setup({
   },
 })
 
+require("lazydev").setup({
+  library = { "nvim-dap-ui" },
+})
+
 local wk = require('which-key')
 wk.add({
   { "<leader>f", group = "Telescope" },
@@ -442,3 +451,4 @@ require('nightfox').setup({
 })
 
 vim.cmd("colorscheme carbonfox")
+
